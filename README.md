@@ -6,28 +6,7 @@ It accepts questions in **Sinhala**, retrieves relevant context from **local FAI
 
 ---
 
-## 1) Requirements checklist (based on current implementation)
-
-### Core requirements
-- **Sinhala input**: ✅ `st.chat_input()` accepts Unicode Sinhala.
-- **Sinhala output**: ✅ final answer is translated to Sinhala and rendered in chat bubbles.
-- **Ollama-based inference**: ✅ `langchain_ollama.OllamaLLM` invoked locally.
-- **Streamlit UI**: ✅ chat-style UI with message bubbles, typing indicator, sidebar chat list.
-- **Chat history within session**: ✅ maintained in `st.session_state.messages`.
-- **Runs fully offline (execution time)**: ✅ all models/docs/indexes are local; environment forces Transformers offline.
-  - Important fix already applied: removed external Google Fonts import so the UI does not fetch anything from the Internet.
-
-### “Minimum expected features” / grading alignment
-- **Usability features (reset/clear chat)**: ✅ “＋ New chat” acts as reset (starts a fresh session). Delete icon removes a session.
-- **20 Sinhala test prompts with outputs in report**: ⏳ you said you will add later.
-- **Offline execution evidence in video**: ✅ supported; see “Offline demo script” section below.
-
-Potential gaps to be aware of (not blockers, but mention in report):
-- First-time setup (pip install, Ollama model pull) may require Internet. This is normal; **execution demo must be offline** with all assets already downloaded.
-
----
-
-## 2) System overview
+## 1) System overview
 
 ### What the chatbot does
 1. User asks a question in Sinhala.
@@ -56,20 +35,20 @@ Potential gaps to be aware of (not blockers, but mention in report):
 flowchart TD
   A[User Sinhala question] --> B[Load active chat + append user message]
   B --> C[SI Retrieval: FAISS Sinhala index]
-  B --> D[Translate query SI->EN (glossary foundation)]
+  B --> D[Translate query SI → EN (glossary foundation)]
   D --> E[EN Retrieval: FAISS English index]
   C --> F[Rank SI candidates: distance + BM25 + bigram + phrase]
   E --> G[Rank EN candidates: distance + BM25 + bigram + phrase]
   F --> H[Merge + dedupe + select top-K]
   G --> H
-  H --> I[Translate ONLY selected SI chunks -> EN (queue)]
+  H --> I[Translate ONLY selected SI chunks → EN (queue)]
   H --> J[Keep EN chunks as-is]
   I --> K[Build merged English context]
   J --> K
   K --> L[Build prompt (English system rules + context + question)]
   L --> M[Ollama local LLM inference]
   M --> N[Apply reverse glossary on EN answer]
-  N --> O[NLLB translate EN->SI]
+  N --> O[NLLB translate EN → SI]
   O --> P[Append references]
   P --> Q[Render Sinhala answer + save to chat_history.json]
 ```

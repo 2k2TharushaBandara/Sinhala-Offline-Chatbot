@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain-classic
+langchain-community
+langchain-huggingface
+faiss-cpu
+sentence-transformers
+sentencepiece-transformers
+owlready2
+requests

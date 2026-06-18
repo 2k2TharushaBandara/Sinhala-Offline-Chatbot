@@ -1,0 +1,94 @@
+# Sinhala History Glossary (si_term = en_term)
+# Lines starting with # are comments.
+# Format: SinhalaTerm = EnglishTerm
+
+# --- පරිපාලන සහ සමාජ තනතුරු (Administration & Social Roles) ---
+පරුමක = Parumaka
+පරුමකවරු = Parumakas
+ගාමිණී = Gamini
+ග්‍රාමික = Gramika
+රජ = King
+රජු = King
+යුවරජ = Yuvaraja
+සේනාපති = Senapathi
+අමාත්‍ය = Amathya
+මහාමාත්‍ය = Mahamathya
+පුරෝහිත = Purohita
+ගහපති = Gahapathi
+දාස = Slaves
+
+# --- ගෘහ නිර්මාණ සහ වාරිමාර්ග (Architecture & Irrigation) ---
+වැව = Wewa
+වැව = Tank
+වැව = Lake
+වැව් = Wewas
+වැව් = Tanks
+වැව් = Lakes
+දාගැබ = Dagoba
+ස්තූපය = Stupa
+විහාරය = Viharaya
+ආරාමය = Aramaya
+වාහල්කඩ = Wahalkada
+සඳකඩපහණ = Sandakadapahana
+කොරවක්ගල = Korawakgala
+මුරගල = Muragala
+වටදාගේ = Vatadage
+බෝධිඝර = Bodhighara
+ආසනඝර = Asanaghara
+පොකුණ = Pokuna
+බිසෝකොටුව = Bisokotuwa
+සොරොව්ව = Sluice
+වේල්ල = Dam
+ගඩොල් = Brick
+වාරි = Irrigation
+
+# --- ස්ථාන සහ රාජධානි (Places & Kingdoms) ---
+අනුරාධපුර = Anuradhapura
+පොළොන්නරු = Polonnaruwa
+රෝහණ = Rohana
+රුහුණ = Ruhuna
+මායා = Maya
+තම්බපණ්ණි = Tambapanni
+සීගිරිය = Sigiriya
+මාගම = Magama
+කැලණිය = Kelaniya
+
+# --- මූලාශ්‍ර සහ සාහිත්‍යය (Sources & Literature) ---
+මහාවංශය = Mahavamsa
+දීපවංශය = Dipavamsa
+චූලවංශය = Chulavamsa
+රාජාවලිය = Rajavaliya
+සෙල්ලිපි = Inscriptions
+සෙල් ලිපි = Inscriptions
+තඹ සන්නස = Copper plate
+බ්‍රාහ්මී = Brahmi
+වංශකතා = Chronicles
+කූන්‍ය අක්ෂර = Cuneiform
+
+# --- ප්‍රසිද්ධ චරිත (Historical Figures) ---
+විජය = Vijaya
+පණ්ඩුකාභය = Pandukabhaya
+දේවානම්පියතිස්ස = Devanampiyatissa
+දුටුගැමුණු = Dutugemunu
+කාවන්තිස්ස = Kavantissa
+විහාරමහාදේවී = Viharamahadevi
+එළාර = Elara
+මහින්ද = Mahinda
+සංඝමිත්තා = Sanghamitta
+වළගම්බා = Valagamba
+ධාතුසේන = Dhatusena
+කාශ්‍යප = Kashyapa
+මහානාම හිමි = Mahanama Thero
+
+# --- ආර්ථික සහ වෙනත් (Economy & Other) ---
+කහවණු = Kahavanu(gold)
+කාසි = Coins
+බෙලි කටු = Cowrie shells
+වෙළඳාම = Trade
+කෘෂිකර්මය = Agriculture
+
+ප්‍රාග් ඓතිහාසික = Pre-Historic
+පූර්ව ඓතිහාසික = Proto-Historic 
+හෝමෝසාපියන් = Homosapien
+පූර්ව රාජ්‍ය =  Pre-state
+උඩරට ගිවිසුමේ = Upcountry Treaty

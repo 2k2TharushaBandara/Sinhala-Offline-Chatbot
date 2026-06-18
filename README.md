@@ -4,8 +4,6 @@ Sinhala language chatbot that runs **fully offline** using **Ollama** (local LLM
 
 It accepts questions in **Sinhala**, retrieves relevant context from **local FAISS indexes** (Sinhala + English), runs an **English prompt** through a local Ollama model, then returns a **Sinhala** answer (local NLLB translation) with references.
 
-> Assignment note: You can reuse this README as the backbone of your 15‑page PDF report (architecture, flowchart, components, testing, offline proof).
-
 ---
 
 ## 1) Requirements checklist (based on current implementation)
@@ -44,11 +42,11 @@ Potential gaps to be aware of (not blockers, but mention in report):
 8. Append references (source PDF + page).
 
 ### Architecture
-- **UI layer**: Streamlit (`Sinhala_Chatbot_V2/app_sinhala.py`)
-- **Retrieval & ranking**: `Sinhala_Chatbot_V2/process_1.py`
-- **Glossary + translation utilities**: `Sinhala_Chatbot_V2/process_2.py`
-- **Prompt template + references**: `Sinhala_Chatbot_V2/process_3.py`
-- **Persistence**: `Sinhala_Chatbot_V2/chat_history.json` (saved sessions)
+- **UI layer**: Streamlit (`app_sinhala.py`)
+- **Retrieval & ranking**: `process_1.py`
+- **Glossary + translation utilities**: `process_2.py`
+- **Prompt template + references**: `process_3.py`
+- **Persistence**: `chat_history.json` (saved sessions)
 
 ---
 
@@ -81,31 +79,28 @@ flowchart TD
 ## 4) Repository layout
 
 ```
-Sinhala_Chatbot/
+Sinhala_Offline_Chatbot/
   README.md
   requirements.txt
   LLM/
     Modelfile3              # Ollama Modelfile (ChatML template + strict system rules)
     qwen2.5-3b-instruct-q5_k_m.gguf  # local GGUF used by Modelfile3
-  Sinhala_Chatbot_V2/
-    app.py                  # wrapper entry
-    app_sinhala.py           # main Streamlit app (hybrid RAG)
-    embedder.ipynb            # build FAISS indexes from PDFs (Sinhala + English)
-    process_1.py              # retrieval + scoring
-    process_2.py              # glossary + translation helpers
-    process_3.py              # prompt + references
-    history_glossary.txt      # si_term = en_term glossary
-    chat_history.json         # saved sessions (auto-created/updated)
-    data_s/                   # (you create) Sinhala PDFs for indexing
-    data/                     # (you create) English PDFs for indexing
-    faiss_index/
-      Sinhala_FAISS/          # local FAISS index (Sinhala)
-      English_FAISS/          # local FAISS index (English)
-    models/
-      nllb/                   # local NLLB model files
-      embeddings/
-        local_labse_model/    # Sinhala embeddings
-        BAAI/                 # English embeddings
+  app.py                  # wrapper entry
+  app_sinhala.py           # main Streamlit app (hybrid RAG)
+  embedder.ipynb            # build FAISS indexes from PDFs (Sinhala + English)
+  process_1.py              # retrieval + scoring
+  process_2.py              # glossary + translation helpers
+  process_3.py              # prompt + references
+  history_glossary.txt      # si_term = en_term glossary
+  chat_history.json         # saved sessions (auto-created/updated)
+  faiss_index/
+    Sinhala_FAISS/          # local FAISS index (Sinhala)
+    English_FAISS/          # local FAISS index (English)
+  models/
+    nllb/                   # local NLLB model files
+    embeddings/
+      local_labse_model/    # Sinhala embeddings
+      BAAI/                 # English embeddings
 ```
 
 ---
@@ -114,7 +109,7 @@ Sinhala_Chatbot/
 
 ### 5.1 Create and activate venv
 ```powershell
-cd "E:\#KDU\#Academics\#7th_SEMESTER\NLP\Assignments\Sinhala_Chatbot"
+cd "E:\Sinhala_Chatbot"
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
@@ -174,7 +169,7 @@ $env:RAG_MODEL = "qwen2.5:3b-instruct"
 
 Note about prompts:
 - `LLM/Modelfile3` already defines a strict SYSTEM instruction.
-- The app also builds a strict English prompt in `Sinhala_Chatbot_V2/process_3.py`.
+- The app also builds a strict English prompt in `process_3.py`.
 - Keeping both is acceptable (rules are consistent), but it can be slightly redundant.
 
 ### 5.4 Run Streamlit app
@@ -188,9 +183,9 @@ streamlit run app_sinhala.py
 ## 6) Offline compliance
 
 ### What is local/offline
-- FAISS indexes are stored locally in `Sinhala_Chatbot_V2/faiss_index/`.
-- NLLB model is stored locally in `Sinhala_Chatbot_V2/models/nllb/`.
-- Embedding models are stored locally in `Sinhala_Chatbot_V2/models/embeddings/...`.
+- FAISS indexes are stored locally in `faiss_index/`.
+- NLLB model is stored locally in `models/nllb/`.
+- Embedding models are stored locally in `models/embeddings/...`.
 - Ollama runs locally and serves inference without Internet.
 
 ### Offline enforcement
@@ -205,15 +200,15 @@ and avoids any external web resources.
 ## 6.1) FAISS DB creation (one-time)
 
 The chatbot uses **two** local FAISS indexes:
-- Sinhala index: `Sinhala_Chatbot_V2/faiss_index/Sinhala_FAISS/`
-- English index: `Sinhala_Chatbot_V2/faiss_index/English_FAISS/`
+- Sinhala index: `faiss_index/Sinhala_FAISS/`
+- English index: `faiss_index/English_FAISS/`
 
 You added an index builder notebook:
-- `Sinhala_Chatbot_V2/embedder.ipynb`
+- `embedder.ipynb`
 
 ### Sinhala index build (Sinhala PDFs)
-1. Copy Sinhala PDFs into `Sinhala_Chatbot_V2/data_s/`.
-2. Open `Sinhala_Chatbot_V2/embedder.ipynb`.
+1. Copy Sinhala PDFs into a folder named, `data_s/`.
+2. Open `embedder.ipynb`.
 3. In the Sinhala section, set:
   - `DATA_PATH = "data_s/"`
   - `INDEX_PATH = "faiss_index/Sinhala_FAISS"` (recommended; matches the app)
@@ -223,7 +218,7 @@ Notes:
 - The notebook converts legacy Sinhala fonts → Unicode using `pandukabhaya` (fm_abhaya), then heals line-breaks, chunks text, embeds with LaBSE, and saves the FAISS index.
 
 ### English index build (English PDFs)
-1. Copy English PDFs into `Sinhala_Chatbot_V2/data/`.
+1. Copy English PDFs into a folder named, `data/`.
 2. In the English section, set:
   - `DATA_PATH = "data/"`
   - `INDEX_PATH = "faiss_index/English_FAISS"` (recommended; matches the app)
@@ -289,7 +284,7 @@ Debug:
 
 ## 8) Glossary behavior
 
-File: `Sinhala_Chatbot_V2/history_glossary.txt`
+File: `history_glossary.txt`
 - Format: `SinhalaTerm = EnglishTerm` (also supports `:` and tab)
 - Used in 2 places:
   1. **Before Sinhala→English translation** (foundation substitution) so key terms are preserved.
@@ -304,7 +299,7 @@ Phrase handling:
 ## 9) Chat history (sessions)
 
 - Session messages live in `st.session_state.messages`.
-- Persistent sessions are saved to `Sinhala_Chatbot_V2/chat_history.json`.
+- Persistent sessions are saved to `chat_history.json`.
 - Sidebar shows:
   - “History ගුරු” title
   - “＋ New chat” (reset)
@@ -312,57 +307,3 @@ Phrase handling:
   - delete icon (🗑) to remove a saved chat
 
 ---
-
-## 10) Testing & evaluation (for your report)
-
-### Suggested structure for the 20 Sinhala prompts
-Include a balanced mix:
-- Definitions (e.g., “අනුරාධපුර යුගය යනු කුමක්ද?”)
-- Persons (kings/figures)
-- Sources (Mahavamsa, inscriptions)
-- Places (Anuradhapura, Rohana)
-- Irrigation/architecture terms (වැව, බිසෝකොටුව)
-- Trick questions (not in context) to show the refusal behavior
-
-### Expected refusal behavior
-System prompt rule:
-- If the answer is not in the retrieved context, the LLM must output exactly:
-  - `I do not have information for that.`
-
-In the Sinhala UI, this will appear translated to Sinhala.
-
----
-
-## 11) Offline execution video script (what to show)
-
-In your unlisted video, show:
-1. **Network OFF** (Wi‑Fi disabled / airplane mode / unplug Ethernet) + Windows network icon.
-2. `ollama list` showing the model is installed locally.
-3. Launch Streamlit: `streamlit run app_sinhala.py`
-4. Do at least **5 Sinhala conversations**:
-   - 3 normal questions answered from context
-   - 2 questions that should refuse (not in context)
-5. Show references appended at the end.
-
-Link: https://drive.google.com/drive/folders/1Cb3p2rH00g0TwhCAEE2hLiV9xOJ7Zcwp?usp=sharing
-
----
-
-## 12) Troubleshooting
-
-- **Sidebar can’t reopen after closing**: hard refresh (`Ctrl+F5`). The app keeps the Streamlit header container so the sidebar toggle remains accessible.
-- **Slow responses**: use a smaller Ollama model (3B or 1.5B) or reduce `RAG_NUM_PREDICT`.
-- **Missing folders**: app stops with an error if FAISS/embeddings/NLLB folders aren’t present.
-
----
-
-## 13) Report writing outline (map to marking scheme)
-
-- **Problem understanding & scope**: offline Sinhala history tutor for grades 6–11.
-- **Architecture**: include the Mermaid diagram + component descriptions.
-- **Implementation**: include snippets from `process_1.py` scoring, `process_2.py` glossary + NLLB, `app_sinhala.py` Ollama call.
-- **Sinhala handling**: Unicode input/output + translation strategy.
-- **UI**: screenshot main chat + sidebar chat sessions.
-- **Testing**: include 20 prompts + outputs (tables) + discussion.
-- **Offline evidence**: add the video URL(s).
-- **References**: Ollama, models, FAISS, Streamlit, LangChain, Transformers.

@@ -1,0 +1,29 @@
+FROM ./qwen2.5-3b-instruct-q5_k_m.gguf
+
+# 1. The ChatML Template (Separates instructions from user input cleanly)
+TEMPLATE """{{ if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{ if .Prompt }}<|im_start|>user
+{{ .Prompt }}<|im_end|>
+{{ end }}<|im_start|>assistant
+"""
+
+# 2. Strict English System Prompt (Optimized for NLLB Translation)
+SYSTEM """You are a history teacher for Grade 6-11 students in Sri Lanka. 
+Strictly follow these rules:
+1. Provide a clear, simple English answer to the question using ONLY the provided Context.
+2. If the answer cannot be found in the Context, output exactly and only: "I do not have information for that."
+3. Do not guess, infer, or include any outside knowledge.
+4. Do not cite or list references at the end of your answer."""
+
+# 3. CPU Speed & Accuracy Optimizations
+PARAMETER temperature 0.2
+PARAMETER top_p 0.9
+# LIMIT RAM USAGE: 2048 is perfect for your new 1200-character chunks (~900 tokens total context).
+PARAMETER num_ctx 2048
+# LIMIT OUTPUT: 250 tokens keeps the CPU from doing unnecessary math once the point is made.
+PARAMETER num_predict 250
+
+# 4. CRITICAL: Stop Tokens (Forces the model to shut down immediately after answering)
+PARAMETER stop "<|im_start|>"
+PARAMETER stop "<|im_end|>"
